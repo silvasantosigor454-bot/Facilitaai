@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#2563eb">
+  <title>FacilitaAI</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f4f7fb;
+      color: #172033;
+      min-height: 100vh;
+    }
+
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e5e7eb;
+      padding: 16px 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+
+    .logo span {
+      color: #111827;
+    }
+
+    .status {
+      font-size: 13px;
+      color: #16a34a;
+    }
+
+    .container {
+      width: min(1100px, 92%);
+      margin: 35px auto;
+    }
+
+    .hero {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .hero h1 {
+      font-size: clamp(30px, 6vw, 52px);
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+      color: #2563eb;
+    }
+
+    .hero p {
+      color: #64748b;
+      font-size: 17px;
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .tool {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 20px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .tool:hover {
+      transform: translateY(-3px);
+      border-color: #2563eb;
+      box-shadow: 0 8px 25px rgba(37, 99, 235, .10);
+    }
+
+    .tool-icon {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .tool h3 {
+      margin-bottom: 5px;
+    }
+
+    .tool p {
+      color: #64748b;
+      font-size: 13px;
+    }
+
+    .chat {
+      background: white;
+      border-radius: 22px;
+      border: 1px solid #e5e7eb;
+      overflow: hidden;
+      box-shadow: 0 10px 35px rgba(0,0,0,.05);
+    }
+
+    .chat-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      font-weight: bold;
+    }
+
+    .messages {
+      height: 390px;
+      overflow-y: auto;
+      padding: 20px;
+      background: #f8fafc;
+    }
+
+    .message {
+      max-width: 82%;
+      padding: 13px 16px;
+      border-radius: 16px;
+      margin-bottom: 12px;
+      line-height: 1.5;
+      white-space: pre-wrap;
+    }
+
+    .bot {
+      background: white;
+      border: 1px solid #e5e7eb;
+      margin-right: auto;
+    }
+
+    .user {
+      background: #2563eb;
+      color: white;
+      margin-left: auto;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+      padding: 15px;
+      background: white;
+    }
+
+    #userInput {
+      flex: 1;
+      border: 1px solid #dbe2ea;
+      border-radius: 14px;
+      padding: 14px;
+      outline: none;
+      font-size: 15px;
+    }
+
+    #userInput:focus {
+      border-color: #2563eb;
+    }
+
+    button {
+      border: none;
+      background: #2563eb;
+      color: white;
+      padding: 0 20px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      background: #1d4ed8;
+    }
+
+    footer {
+      text-align: center;
+      color: #94a3b8;
+      padding: 30px;
+      font-size: 13px;
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 14px 4%;
+      }
+
+      .container {
+        width: 94%;
+        margin: 25px auto;
+      }
+
+      .messages {
+        height: 420px;
+      }
+
+      .input-area {
+        padding: 10px;
+      }
+
+      button {
+        padding: 0 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header>
+  <div class="logo">Facilita<span>AI</span></div>
+  <div class="status">● Online</div>
+</header>
+
+<main class="container">
+
+  <section class="hero">
+    <h1>Olá! Eu sou o <span>FacilitaAI</span></h1>
+    <p>Uma assistente inteligente para facilitar suas tarefas.</p>
+  </section>
+
+  <section class="tools">
+
+    <div class="tool" onclick="useTool('calcular')">
+      <div class="tool-icon">🧮</div>
+      <h3>Calculadora</h3>
+      <p>Faça cálculos rapidamente.</p>
+    </div>
+
+    <div class="tool" onclick="useTool('resumo')">
+      <div class="tool-icon">📝</div>
+      <h3>Resumo</h3>
+      <p>Ajude a resumir textos.</p>
+    </div>
+
+    <div class="tool" onclick="useTool('estudos')">
+      <div class="tool-icon">📚</div>
+      <h3>Estudos</h3>
+      <p>Receba ajuda para estudar.</p>
+    </div>
+
+    <div class="tool" onclick="useTool('ideias')">
+      <div class="tool-icon">💡</div>
+      <h3>Ideias</h3>
+      <p>Encontre ideias para projetos.</p>
+    </div>
+
+  </section>
+
+  <section class="chat">
+
+    <div class="chat-header">
+      🤖 Assistente FacilitaAI
+    </div>
+
+    <div class="messages" id="messages">
+      <div class="message bot">
+        Olá! 👋 Eu sou o FacilitaAI.
+
+        Posso ajudar com estudos, cálculos, ideias, textos e várias outras tarefas.
+
+        Digite sua pergunta abaixo!
+      </div>
+    </div>
+
+    <div class="input-area">
+      <input
+        id="userInput"
+        type="text"
+        placeholder="Digite sua pergunta..."
+        autocomplete="off"
+      >
+
+      <button onclick="sendMessage()">Enviar</button>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+  © 2026 FacilitaAI — Projeto desenvolvido para a web.
+</footer>
+
+<script>
+
+  const input = document.getElementById("userInput");
+  const messages = document.getElementById("messages");
+
+  input.addEventListener("keydown", function(event) {
+    if (event.key === "Enter") {
+      sendMessage();
+    }
+  });
+
+  function addMessage(text, type) {
+
+    const message = document.createElement("div");
+
+    message.className = "message " + type;
+
+    message.textContent = text;
+
+    messages.appendChild(message);
+
+    messages.scrollTop = messages.scrollHeight;
+  }
+
+  function sendMessage() {
+
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    addMessage(text, "user");
+
+    input.value = "";
+
+    setTimeout(() => {
+
+      const response = generateResponse(text);
+
+      addMessage(response, "bot");
+
+    }, 500);
+  }
+
+  function generateResponse(text) {
+
+    const t = text.toLowerCase();
+
+    if (
+      t.includes("olá") ||
+      t.includes("ola") ||
+      t.includes("oi") ||
+      t.includes("hello")
+    ) {
+      return "Olá! 👋 Como posso ajudar você hoje?";
+    }
+
+    if (t.includes("quem é você") || t.includes("quem e você")) {
+      return "Eu sou o FacilitaAI 🤖, uma assistente criada para ajudar com tarefas, estudos, cálculos, ideias e informações.";
+    }
+
+    if (
+      t.includes("obrigado") ||
+      t.includes("obrigada")
+    ) {
+      return "Por nada! 😄 Estou aqui para ajudar.";
+    }
+
+    if (
+      t.includes("estudar") ||
+      t.includes("estudo") ||
+      t.includes("escola")
+    ) {
+      return "📚 Posso ajudar você a estudar explicando assuntos, criando resumos e resolvendo exercícios passo a passo.";
+    }
+
+    if (
+      t.includes("matemática") ||
+      t.includes("matematica") ||
+      t.includes("cálculo") ||
+      t.includes("calculo")
+    ) {
+      return "🧮 Posso ajudar com matemática. Envie a conta ou o problema que você quer resolver.";
+    }
+
+    if (
+      t.includes("site") ||
+      t.includes("html") ||
+      t.includes("programar") ||
+      t.includes("código") ||
+      t.includes("codigo")
+    ) {
+      return "💻 Posso ajudar com HTML, CSS, JavaScript e ideias para criar sites.";
+    }
+
+    if (
+      t.includes("dinheiro") ||
+      t.includes("finanças") ||
+      t.includes("financas")
+    ) {
+      return "💰 Posso explicar conceitos básicos de finanças, como orçamento, economia e organização financeira.";
+    }
+
+    if (
+      t.includes("ideia") ||
+      t.includes("projeto")
+    ) {
+      return "💡 Uma ideia é criar uma ferramenta simples que resolva um problema específico. Posso ajudar você a planejar o projeto.";
+    }
+
+    if (
+      t.includes("resumo")
+    ) {
+      return "📝 Claro! Envie o texto que você quer resumir e eu posso ajudar a identificar as ideias principais.";
+    }
+
+    return "🤖 Entendi sua mensagem! Nesta versão gratuita do FacilitaAI, minha inteligência funciona localmente no navegador. Para respostas realmente generativas, podemos conectar uma API de IA através de um backend.";
+  }
+
+  function useTool(tool) {
+
+    if (tool === "calcular") {
+      input.value = "Quero fazer um cálculo:";
+    }
+
+    if (tool === "resumo") {
+      input.value = "Quero resumir este texto:";
+    }
+
+    if (tool === "estudos") {
+      input.value = "Quero ajuda para estudar:";
+    }
+
+    if (tool === "ideias") {
+      input.value = "Me dê ideias para um projeto:";
+    }
+
+    input.focus();
+  }
+
+</script>
+
+</body>
+</html>
